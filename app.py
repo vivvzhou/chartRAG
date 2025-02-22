@@ -1,9 +1,14 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for
 import pandas as pd
 from openai import OpenAI
 import os
+import secrets
+
+secret = secrets.token_urlsafe(32)
 
 app = Flask(__name__)
+
+app.secret_key = secret
 
 # Load your OpenAI API key from an environment variable for security
 api_key = os.getenv('OPENAI_API_KEY')
@@ -38,7 +43,8 @@ def upload_file():
         max_tokens=100
     )
     
-    return summary.choices[0].message.content
+    flash(summary.choices[0].message.content)  # Use flash to pass data to another route
+    return redirect('/details')
 
 @app.route('/ask', methods=['POST'])
 def ask_question():
@@ -52,13 +58,12 @@ def ask_question():
     prompt=f"Question: {question}\n\nData Summary:\n{description}\n\nAnswer:"
     
     # Simulating a response based on data summary, you could extend this to use OpenAI based on user questions
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=150
     )
-    print({'answer': response.choices[0].text})
-    return {'answer': response.choices[0].text}
+    return response.choices[0].message.content
 
 if __name__ == '__main__':
     app.run(debug=True)
