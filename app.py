@@ -43,8 +43,6 @@ def ask_question():
 
     if data_df is None:
         return jsonify({'error': 'No data loaded'}), 400
-    
-    global data_df
     file = request.files['datafile']
     if not file:
         return jsonify({'error': 'No file provided'}), 400
