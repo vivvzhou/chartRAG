@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify, render_template
 import pandas as pd
-import openai
+from openai import OpenAI
 import os
 
 app = Flask(__name__)
 
 # Load your OpenAI API key from an environment variable for security
-openai.api_key = os.getenv('OPENAI_API_KEY')
+api_key = os.getenv('OPENAI_API_KEY')
+client = OpenAI(api_key=api_key)
 
 # Global variable to store the data DataFrame
 data_df = None
@@ -31,13 +32,13 @@ def upload_file():
     prompt=f"Summarize this data: {description}"
     
     # Generate summary with OpenAI
-    summary = openai.ChatCompletion.create(
+    summary = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=100
     )
     
-    return jsonify({'summary': summary['choices'][0]['message']['content']})
+    return summary.choices[0].message.content
 
 @app.route('/ask', methods=['POST'])
 def ask_question():
