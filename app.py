@@ -49,6 +49,7 @@ def upload_file():
 @app.route('/ask', methods=['POST'])
 def ask_question():
     question = request.json.get('question', '')
+    print(question)
     if not question:
         return jsonify({'error': 'No question provided'}), 400
 
@@ -63,7 +64,8 @@ def ask_question():
         messages=[{"role": "user", "content": prompt}],
         max_tokens=150
     )
-    return response.choices[0].message.content
+    print(response.choices[0].message.content)
+    return {'answer' : response.choices[0].message.content}
 
 if __name__ == '__main__':
     app.run(debug=True)
