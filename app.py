@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, render_template
 import pandas as pd
 import openai
 import os
@@ -12,8 +12,12 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 data_df = None
 
 @app.route('/')
-def home():
-    return send_from_directory('templates', 'index.html')
+def base():
+    return render_template('upload.html')
+
+@app.route('/details')
+def details():
+    return render_template('details.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -43,11 +47,6 @@ def ask_question():
 
     if data_df is None:
         return jsonify({'error': 'No data loaded'}), 400
-    file = request.files['datafile']
-    if not file:
-        return jsonify({'error': 'No file provided'}), 400
-
-    data_df = pd.read_csv(file)
     description = data_df.describe().to_string()
     prompt=f"Question: {question}\n\nData Summary:\n{description}\n\nAnswer:"
     

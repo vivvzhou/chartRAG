@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Home - My Flask App{% endblock %}
+
+{% block content %}
+    <h2>Ask a question about the data:</h2>
+    <input type="text" id="questionInput" placeholder="Type your question...">
+    <button onclick="askQuestion()">Ask</button>
+    <p id="answerText"></p>
+
+    <script>
+        function askQuestion() {
+            const question = document.getElementById('questionInput').value;
+            const answerText = document.getElementById('answerText');
+
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question: question })
+            })
+            .then(response => response.json())
+            .then(data => {
+                answerText.textContent = 'Answer: ' + data.answer;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+{% endblock %}
