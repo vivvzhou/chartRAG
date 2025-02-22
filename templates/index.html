@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Analysis Chatbot</title>
+</head>
+<body>
+    <h1>Data Upload</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="datafile">
+        <button type="submit">Upload Data</button>
+    </form>
+
+    <h2>Ask a question about the data:</h2>
+    <input type="text" id="questionInput" placeholder="Type your question...">
+    <button onclick="askQuestion()">Ask</button>
+    <p id="answerText"></p>
+
+    <script>
+        function askQuestion() {
+            const question = document.getElementById('questionInput').value;
+            const answerText = document.getElementById('answerText');
+
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question: question })
+            })
+            .then(response => response.json())
+            .then(data => {
+                answerText.textContent = 'Answer: ' + data.answer;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
