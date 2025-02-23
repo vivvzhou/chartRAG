@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import numpy as np
 
 api_key = os.getenv('OPENAI_API_KEY')
-client = OpenAI(api_key='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')
+client = OpenAI(api_key=api_key)
 chart_memory = ['Graph type Treemap data used: col1 = Common Varieties col2 = None col3 = None','Graph type Treemap data used: col1 = Vegetable ID col2 = None col3 = None']
 CHART_OPTIONS = ['Line', 'Bar', 'Histogram', 'Scatterplot', 'Boxplot', 'Piechart', 'Treemap']
 invalid_chart_types = []
