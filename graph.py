@@ -59,16 +59,11 @@ def get_graph_recommendation(data):
     print(response.choices[0].message.content)
     print("wow")
     if (validate_graph_type(data, response.choices[0].message.content)):
-        print("I validated")
+        print("I validated" + response.choices[0].message.content)
         return response.choices[0].message.content
     elif (len(invalid_chart_types) == len(CHART_OPTIONS)):
-        prompt=f"Recommend a graph for this data to best represent the data: {data}. Here are your responce options: {CHART_OPTIONS} but you cannot use these options: {invalid_chart_types}. only use one word from the list as your response"
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=150
-        )
-        return response.choices[0].message.content
+        print("I guess I chose" + invalid_chart_types[0])
+        return invalid_chart_types[0]
     else:
         invalid_chart_types.append(response.choices[0].message.content)
         print(invalid_chart_types)
