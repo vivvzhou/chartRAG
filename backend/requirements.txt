@@ -3,3 +3,5 @@ pandas
 openai
 python-dotenv
 flask_cors
+plotly
+numpy
