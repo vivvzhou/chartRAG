@@ -6,11 +6,11 @@ import secrets
 from graph import get_graph_recommendation, generate_graph
 import re       # Regular expressions for markdown conversion (String -> html)
 
-#secret = secrets.token_urlsafe(32)
+secret = secrets.token_urlsafe(32)
 
-#app = Flask(__name__)
+app = Flask(__name__)
 
-#app.secret_key = secret
+app.secret_key = secret
 
 # Load your OpenAI API key from an environment variable for security
 api_key = os.getenv('OPENAI_API_KEY')
