@@ -2,5 +2,6 @@ main {
     font-family: "Poppins", serif;
     font-weight: 300;
     font-style: normal;
+    /* white-space: pre-wrap; */
 }
 
