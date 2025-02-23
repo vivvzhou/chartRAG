@@ -3,8 +3,9 @@
 
 import { useState } from "react";
 
-export default function QuestionSection({ setAnswer }) {
+export default function QuestionSection() {
   const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
 
   const handleAsk = async () => {
     if (!question) {
@@ -34,7 +35,7 @@ export default function QuestionSection({ setAnswer }) {
   };
 
   return (
-    <div>
+    <div className="bg-background text-foreground">
       <h2 className="text-xl font-semibold mb-2">Ask a Question</h2>
       <input
         type="text"
@@ -49,6 +50,12 @@ export default function QuestionSection({ setAnswer }) {
       >
         Ask
       </button>
+      {answer && (
+        <div className="mt-4 p-4 border rounded bg-gray-100">
+          <h3 className="text-lg font-semibold">Answer:</h3>
+          <p>{answer}</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -34,7 +34,7 @@ export default function MessageSection({ setBackendResponse }) {
   };
 
   return (
-    <div className="mt-8">
+    <div className="mt-8 bg-background text-foreground">
       <h2 className="text-xl font-semibold mb-2">Send a Message</h2>
       <input
         type="text"

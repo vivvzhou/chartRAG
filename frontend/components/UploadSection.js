@@ -36,8 +36,8 @@ export default function UploadSection({ summary, setSummary }) {
     }
   };
 
-  return (
-    <div className="mb-8">
+      return (
+        <div className="mb-8 bg-background text-foreground">
       <h2 className="text-xl font-semibold mb-2">Upload CSV File</h2>
       <input type="file" accept=".csv" onChange={handleFileChange} />
       <button
