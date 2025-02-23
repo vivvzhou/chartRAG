@@ -17,3 +17,8 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.container {
+  display: flex;
+  justify-content: center;
+}

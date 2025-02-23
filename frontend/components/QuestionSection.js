@@ -37,19 +37,22 @@ export default function QuestionSection() {
   return (
     <div className="bg-background text-foreground">
       <h2 className="text-xl font-semibold mb-2">Ask a Question</h2>
-      <input
-        type="text"
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
-        className="border p-2 w-full mb-2"
-        placeholder="Enter your question"
-      />
-      <button
-        onClick={handleAsk}
-        className="px-4 py-2 bg-green-500 text-white rounded"
-      >
-        Ask
-      </button>
+      <div className="container mx-auto flex items-center">
+        <input
+          type="text"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          className="border p-2 w-full justify-center items-center"
+          placeholder="Enter your question"
+        />
+        <button
+          onClick={handleAsk}
+          className="px-4 py-2 bg-green-500 text-white rounded items-center justify-center"
+        >
+          Ask
+        </button>
+      </div>
+
       {answer && (
         <div className="mt-4 p-4 border rounded bg-gray-100">
           <h3 className="text-lg font-semibold">Answer:</h3>

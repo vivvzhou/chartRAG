@@ -100,11 +100,19 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto p-8 bg-white">
-      <h1 className="text-2xl font-bold mb-4">Data Analyzer</h1>
-      <UploadSection summary={summary} setSummary={setSummary} />
-      <QuestionSection setAnswer={setAnswer} />
-      {/* <MessageSection setBackendResponse={setBackendResponse} /> */}
+    <div>
+      <h1 className="text-3xl font-bold mb-4 text-center pt-8">Data Analyzer</h1>
+      <div className="container mx-auto p-8 bg-white">
+        <div className="flex flex-col items-center p-4">
+          <UploadSection summary={summary} setSummary={setSummary} />
+        </div>
+        <div className="flex flex-col items-center p-4">
+          <QuestionSection setAnswer={setAnswer} />
+        </div>
+        {/* <div className="flex flex-col items-center">
+          <MessageSection setBackendResponse={setBackendResponse} />
+        </div> */}
+      </div>
     </div>
   );
 }
