@@ -61,7 +61,9 @@ def ask_question():
     # Simulating a response based on data summary, you could extend this to use OpenAI based on user questions
     response = client.chat.completions.create(
         model="gpt-4o",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {"role": "system", "content": "Try to answer the question in one sentence."},
+            {"role": "user", "content": prompt}],
         max_tokens=150
     )
     print(response.choices[0].message.content)

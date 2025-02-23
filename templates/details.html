@@ -31,5 +31,11 @@
             })
             .catch(error => console.error('Error:', error));
         }
+
+        document.getElementById('questionInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                askQuestion();
+            }
+        });
     </script>
 {% endblock %}
