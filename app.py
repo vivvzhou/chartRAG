@@ -14,7 +14,7 @@ app.secret_key = secret
 
 # Load your OpenAI API key from an environment variable for security
 api_key = os.getenv('OPENAI_API_KEY')
-client = OpenAI(api_key=api_key)
+client = OpenAI(api_key='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')
 
 # Global variable to store the data DataFrame
 data_df = None
@@ -30,7 +30,7 @@ def details():
     global graph
     print("second")
     print(description)
-    fig = generate_graph(data_df, get_graph_recommendation(description))
+    fig = generate_graph(data_df, get_graph_recommendation(data_df))
     graph = fig
     graph_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
     return render_template('details.html', graph_html=graph_html)
@@ -44,11 +44,18 @@ def upload_file():
         return jsonify({'error': 'No file provided'}), 400
 
     data_df = pd.read_csv(file)
+
+    print("DataFrame head:")
+    print(data_df.head())
+    
+    print("DataFrame columns:")
+    print(data_df.columns)
+
     description = data_df.describe().to_string()
     print("first")
     print(description)
+
     prompt=f"Summarize this data: {data_df}"
-    
     # Generate summary with OpenAI
     summary = client.chat.completions.create(
         model="gpt-4o",
