@@ -25,13 +25,13 @@ client = OpenAI(api_key=api_key)
 data_df = None
 summary_content = None
 
-@app.route('/')
-def base():
-    return render_template('upload.html')
+# @app.route('/')
+# def base():
+#     return render_template('upload.html')
 
-@app.route('/details')
-def details():
-    return render_template('details.html')
+# @app.route('/details')
+# def details():
+#     return render_template('details.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
