@@ -14,7 +14,7 @@ app.secret_key = secret
 
 # Load your OpenAI API key from an environment variable for security
 api_key = os.getenv('OPENAI_API_KEY')
-client = OpenAI(api_key=api_key)
+client = OpenAI(api_key='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')
 
 # Global variable to store the data DataFrame
 data_df = None
@@ -29,7 +29,8 @@ def base():
 def details():
     prompt=f"""output the relevant data in html table format: {description}.
     Start with the table itself, with nothing else.
-    Also, round the numbers two decimal places."""
+    Also, round the numbers two decimal places.
+    Try your best to make the headers less than three words without losing its meaning."""
     
     # Generate table with OpenAI
     tableResponse = client.chat.completions.create(
@@ -80,7 +81,7 @@ def upload_file():
         messages=[{"role": "user", "content": prompt}],
         max_tokens=1000
     )
-    flash(summary.choices[0].message.content)  # Use flash to pass data to another route
+    flash(markdown_to_html(summary.choices[0].message.content))  # Use flash to pass data to another route
     return redirect('/details')
 
 @app.route('/ask', methods=['POST'])
@@ -102,7 +103,7 @@ def ask_question():
             {"role": "user", "content": prompt}],
         max_tokens=150
     )
-    return {'answer' : response.choices[0].message.content}
+    return {'answer' : markdown_to_html(response.choices[0].message.content)}
 
 def markdown_to_html(markdown_text):
     # Convert headers
