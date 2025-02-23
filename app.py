@@ -40,7 +40,7 @@ def upload_file():
     summary = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=100
+        max_tokens=1000
     )
     
     flash(summary.choices[0].message.content)  # Use flash to pass data to another route
@@ -66,7 +66,6 @@ def ask_question():
             {"role": "user", "content": prompt}],
         max_tokens=150
     )
-    print(response.choices[0].message.content)
     return {'answer' : response.choices[0].message.content}
 
 if __name__ == '__main__':
