@@ -14,7 +14,7 @@ app.secret_key = secret
 
 # Load your OpenAI API key from an environment variable for security
 api_key = os.getenv('OPENAI_API_KEY')
-client = OpenAI(api_key='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')
+client = OpenAI(api_key=api_key)
 
 # Global variable to store the data DataFrame
 data_df = None
