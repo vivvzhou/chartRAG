@@ -117,4 +117,28 @@ ChartRAG is a web application that allows users to upload CSV files, generate da
 
 3. **Access the application:**
 
-   Open your web browser and go to `http://127.0.0.1:5000/` to access the application.
+
+Open your web browser and go to `http://127.0.0.1:5000/` to access the application.
+
+## Docker Deployment
+
+To build and run the backend using Docker, follow these steps:
+
+1. **Build the Docker image:**
+
+   ```bash
+   cd backend
+   docker build -t chart-rag-backend .
+   ```
+
+2. **Run the Docker container with the `OPENAI_API_KEY` attached as an environment variable:**
+
+   ```bash
+   docker run -p 5000:5000 -e OPENAI_API_KEY=your-api-key chart-rag-backend
+   ```
+
+   Replace `your-api-key` with your actual OpenAI API key.
+
+3. **Access the application:**
+
+   Open your web browser and go to `http://127.0.0.1:5000/` to access the application running inside the Docker container.
