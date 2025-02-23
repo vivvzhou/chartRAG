@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template, flash, redirect, url
 import pandas as pd
 from openai import OpenAI
 import os
+from dotenv import load_dotenv
 import secrets
 import re       # Regular expressions for markdown conversion (String -> html)
 
@@ -10,6 +11,9 @@ secret = secrets.token_urlsafe(32)
 app = Flask(__name__)
 
 app.secret_key = secret
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Load your OpenAI API key from an environment variable for security
 api_key = os.getenv('OPENAI_API_KEY')
@@ -36,14 +40,14 @@ def upload_file():
     data_df = pd.read_csv(file)
     description = data_df.describe().to_string()
     prompt=f"Summarize this data: {description}"
-    
+
     # Generate summary with OpenAI
     summary = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=1000
     )
-    
+
     flash(summary.choices[0].message.content)  # Use flash to pass data to another route
     return redirect('/details')
 
@@ -58,7 +62,7 @@ def ask_question():
         return jsonify({'error': 'No data loaded'}), 400
     description = data_df.describe().to_string()
     prompt=f"Question: {question}\n\nData Summary:\n{description}\n\nAnswer:"
-    
+
     # Simulating a response based on data summary, you could extend this to use OpenAI based on user questions
     response = client.chat.completions.create(
         model="gpt-4o",
