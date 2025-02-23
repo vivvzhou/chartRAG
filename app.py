@@ -35,7 +35,11 @@ def upload_file():
 
     data_df = pd.read_csv(file)
     description = data_df.describe().to_string()
-    prompt=f"Summarize this data: {description}"
+    # prompt=f"Summarize this data: {description}"
+
+    prompt=f"""output the relevant data in html table format: {description}.
+    Start with the table itself, with nothing else.
+    Also, round the numbers two decimal places."""
     
     # Generate summary with OpenAI
     summary = client.chat.completions.create(
@@ -43,8 +47,10 @@ def upload_file():
         messages=[{"role": "user", "content": prompt}],
         max_tokens=1000
     )
-    
-    flash(markdown_to_html(summary.choices[0].message.content))  # Use flash to pass data to another route
+    print(((summary.choices[0].message.content)))
+
+    print((markdown_table_to_html(summary.choices[0].message.content)))
+    flash(markdown_table_to_html(summary.choices[0].message.content))  # Use flash to pass data to another route
     return redirect('/details')
 
 @app.route('/ask', methods=['POST'])
@@ -80,15 +86,50 @@ def markdown_to_html(markdown_text):
 
     # Convert bold text
     markdown_text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', markdown_text)
-    markdown_text = re.sub(r'__(.+?)__', r'<b>\1</b>', markdown_text)
+    # markdown_text = re.sub(r'__(.+?)__', r'<b>\1</b>', markdown_text)
     
     # Convert italic text
     markdown_text = re.sub(r'\*(.+?)\*', r'<i>\1</i>', markdown_text)
-    markdown_text = re.sub(r'_(.+?)_', r'<i>\1</i>', markdown_text)
+    # markdown_text = re.sub(r'_(.+?)_', r'<i>\1</i>', markdown_text)
     
     # Convert new lines
     markdown_text = re.sub(r'\n', r'<br>', markdown_text)
+
     return markdown_text
+
+def markdown_table_to_html(markdown_text):
+    # Convert bold text
+    markdown_text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', markdown_text)
+    # markdown_text = re.sub(r'__(.+?)__', r'<b>\1</b>', markdown_text)
+    
+    # Convert italic text
+    markdown_text = re.sub(r'\*(.+?)\*', r'<i>\1</i>', markdown_text)
+    # markdown_text = re.sub(r'_(.+?)_', r'<i>\1</i>', markdown_text)
+    
+    # Convert tables
+    def convert_table(match):
+        table = match.group(0)
+        rows = table.strip().split('\n')
+        header = rows[0].split('|')[1:-1]
+        header_html = ''.join([f'<th>{col.strip()}</th>' for col in header])
+        header_html = f'<tr>{header_html}</tr>'
+        
+        body_html = ''
+        for row in rows[2:]:
+            cols = row.split('|')[1:-1]
+            row_html = ''.join([f'<td>{col.strip()}</td>' for col in cols])
+            body_html += f'<tr>{row_html}</tr>'
+        
+        return f'<table>{header_html}{body_html}</table>'
+    
+    markdown_text = re.sub(r'```html([\s\S]+?)```', r'\1', markdown_text)
+
+
+    markdown_text = re.sub(r'(\|.+\|(?:\n\|[-:]+\|)+\n(?:\|.*\|(?:\n|$))+)', convert_table, markdown_text)
+
+    return markdown_text
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

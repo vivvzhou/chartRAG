@@ -5,3 +5,34 @@ main {
     /* white-space: pre-wrap; */
 }
 
+td, th {
+    padding: .5rem;
+}
+
+table {
+    border-radius: .75rem;        /* Curve the corners */
+    /* border-collapse: collapse;  Remove the space between cells */
+    width: 100%;
+    border: 2px solid #333;
+    border-collapse: separate;
+
+}
+
+tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+}
+
+/* Top right cell */
+tr:first-child th:last-child {
+    border-top-right-radius: 10px;
+}
+
+/* Bottom left cell */
+tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+/* Bottom right cell */
+tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
