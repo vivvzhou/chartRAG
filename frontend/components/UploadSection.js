@@ -49,7 +49,7 @@ export default function UploadSection({ summary, setSummary }) {
       {summary && (
         <div className="mt-4">
           <h3 className="text-lg font-semibold">Summary:</h3>
-          <p>{summary}</p>
+          <p className="whitespace-pre-wrap">{summary}</p>
         </div>
       )}
     </div>
