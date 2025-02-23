@@ -26,10 +26,40 @@
             })
             .then(response => response.json())
             .then(data => {
-                answerText.textContent = 'Answer: ' + data.answer;
-                console.log(data.answer)
+                const html = markdownToHtml(data.answer);
+                answerText.textContent = 'Answer: ' + html;
             })
             .catch(error => console.error('Error:', error));
+        }
+
+        document.getElementById('questionInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                askQuestion();
+            }
+        });
+
+
+        function markdownToHtml(markdownText) {
+            // Convert headers
+            markdownText = markdownText.replace(/^###### (.+)$/gm, '<h6>$1</h6>');
+            markdownText = markdownText.replace(/^##### (.+)$/gm, '<h5>$1</h5>');
+            markdownText = markdownText.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+            markdownText = markdownText.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+            markdownText = markdownText.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+            markdownText = markdownText.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+
+            // Convert bold text
+            markdownText = markdownText.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            markdownText = markdownText.replace(/__(.+?)__/g, '<strong>$1</strong>');
+
+            // Convert italic text
+            markdownText = markdownText.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            markdownText = markdownText.replace(/_(.+?)_/g, '<em>$1</em>');
+
+            // Convert new lines to <br> tags
+            markdownText = markdownText.replace(/\n/g, '<br>');
+
+            return markdownText;
         }
     </script>
 {% endblock %}

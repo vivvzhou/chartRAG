@@ -3,6 +3,7 @@ import pandas as pd
 from openai import OpenAI
 import os
 import secrets
+import re       # Regular expressions for markdown conversion (String -> html)
 
 secret = secrets.token_urlsafe(32)
 
@@ -40,7 +41,7 @@ def upload_file():
     summary = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=100
+        max_tokens=1000
     )
     
     flash(summary.choices[0].message.content)  # Use flash to pass data to another route
@@ -61,11 +62,35 @@ def ask_question():
     # Simulating a response based on data summary, you could extend this to use OpenAI based on user questions
     response = client.chat.completions.create(
         model="gpt-4o",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {"role": "system", "content": "Try to answer the question in one sentence."},
+            {"role": "user", "content": prompt}],
         max_tokens=150
     )
-    print(response.choices[0].message.content)
     return {'answer' : response.choices[0].message.content}
+
+def markdown_to_html(markdown_text):
+    # Convert headers
+    markdown_text = re.sub(r'###### (.+)', r'<h6>\1</h6>', markdown_text)
+    markdown_text = re.sub(r'##### (.+)', r'<h5>\1</h5>', markdown_text)
+    markdown_text = re.sub(r'#### (.+)', r'<h4>\1</h4>', markdown_text)
+    markdown_text = re.sub(r'### (.+)', r'<h3>\1</h3>', markdown_text)
+    markdown_text = re.sub(r'## (.+)', r'<h2>\1</h2>', markdown_text)
+    markdown_text = re.sub(r'# (.+)', r'<h1>\1</h1>', markdown_text)
+    
+    # Convert bold text
+    markdown_text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', markdown_text)
+    markdown_text = re.sub(r'__(.+?)__', r'<b>\1</b>', markdown_text)
+    
+    # Convert italic text
+    markdown_text = re.sub(r'\*(.+?)\*', r'<i>\1</i>', markdown_text)
+    markdown_text = re.sub(r'_(.+?)_', r'<i>\1</i>', markdown_text)
+    
+    # Convert new lines
+    markdown_text = re.sub(r'\n', r'<br>', markdown_text)
+
+    return markdown_text
+
 
 if __name__ == '__main__':
     app.run(debug=True)
