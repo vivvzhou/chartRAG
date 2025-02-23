@@ -2,3 +2,4 @@ Flask
 pandas
 openai
 python-dotenv
+flask_cors
