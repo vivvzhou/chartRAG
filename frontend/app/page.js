@@ -102,9 +102,9 @@ export default function Home() {
   return (
     <div className="container mx-auto p-8 bg-white">
       <h1 className="text-2xl font-bold mb-4">Data Analyzer</h1>
-<UploadSection summary={summary} setSummary={setSummary} />
-<QuestionSection setAnswer={setAnswer} />
-{/* <MessageSection setBackendResponse={setBackendResponse} /> */}
+      <UploadSection summary={summary} setSummary={setSummary} />
+      <QuestionSection setAnswer={setAnswer} />
+      {/* <MessageSection setBackendResponse={setBackendResponse} /> */}
     </div>
   );
 }
