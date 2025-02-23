@@ -17,6 +17,7 @@ client = OpenAI(api_key=api_key)
 
 # Global variable to store the data DataFrame
 data_df = None
+description = None
 
 @app.route('/')
 def base():
@@ -24,11 +25,23 @@ def base():
 
 @app.route('/details')
 def details():
-    return render_template('details.html')
+    prompt=f"""output the relevant data in html table format: {description}.
+    Start with the table itself, with nothing else.
+    Also, round the numbers two decimal places."""
+    
+    # Generate table with OpenAI
+    tableResponse = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=1000
+    )
+    table = markdown_table_to_html(tableResponse.choices[0].message.content)
+    return render_template('details.html', table=table)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
     global data_df
+    global description
     file = request.files['datafile']
     if not file:
         return jsonify({'error': 'No file provided'}), 400
@@ -41,22 +54,19 @@ def upload_file():
     Start with the table itself, with nothing else.
     Also, round the numbers two decimal places."""
     
-    # Generate summary with OpenAI
+    # Generate table with OpenAI
     summary = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=1000
     )
-    print(((summary.choices[0].message.content)))
-
-    print((markdown_table_to_html(summary.choices[0].message.content)))
+    table = markdown_table_to_html(summary.choices[0].message.content)
     flash(markdown_table_to_html(summary.choices[0].message.content))  # Use flash to pass data to another route
     return redirect('/details')
 
 @app.route('/ask', methods=['POST'])
 def ask_question():
     question = request.json.get('question', '')
-    print(question)
     if not question:
         return jsonify({'error': 'No question provided'}), 400
 

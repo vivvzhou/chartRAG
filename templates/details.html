@@ -7,10 +7,15 @@
     {% for message in get_flashed_messages() %}
         <div>{{ message|safe }}</div>  <!-- Use 'safe' filter to render HTML if needed -->
     {% endfor %}
+
     <h2>Ask a question about the data:</h2>
     <input type="text" id="questionInput" placeholder="Type your question...">
     <button onclick="askQuestion()">Ask</button>
     <p id="answerText"></p>
+    <h1>Table</h1>
+    <div>
+        {{table|safe}}
+    </div>
 
     <script>
         function askQuestion() {
