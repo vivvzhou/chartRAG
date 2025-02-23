@@ -26,8 +26,9 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data.answer)
                 const html = markdownToHtml(data.answer);
-                answerText.textContent = 'Answer: ' + html;
+                answerText.innerHTML = 'Answer: ' + html;
             })
             .catch(error => console.error('Error:', error));
         }
@@ -58,6 +59,7 @@
 
             // Convert new lines to <br> tags
             markdownText = markdownText.replace(/\n/g, '<br>');
+            console.log(markdownText)
 
             return markdownText;
         }

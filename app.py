@@ -44,7 +44,7 @@ def upload_file():
         max_tokens=1000
     )
     
-    flash(summary.choices[0].message.content)  # Use flash to pass data to another route
+    flash(markdown_to_html(summary.choices[0].message.content))  # Use flash to pass data to another route
     return redirect('/details')
 
 @app.route('/ask', methods=['POST'])
@@ -63,7 +63,7 @@ def ask_question():
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "Try to answer the question in one sentence."},
+            {"role": "system", "content": "I believe in you!"},
             {"role": "user", "content": prompt}],
         max_tokens=150
     )
@@ -77,7 +77,7 @@ def markdown_to_html(markdown_text):
     markdown_text = re.sub(r'### (.+)', r'<h3>\1</h3>', markdown_text)
     markdown_text = re.sub(r'## (.+)', r'<h2>\1</h2>', markdown_text)
     markdown_text = re.sub(r'# (.+)', r'<h1>\1</h1>', markdown_text)
-    
+
     # Convert bold text
     markdown_text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', markdown_text)
     markdown_text = re.sub(r'__(.+?)__', r'<b>\1</b>', markdown_text)
@@ -88,9 +88,7 @@ def markdown_to_html(markdown_text):
     
     # Convert new lines
     markdown_text = re.sub(r'\n', r'<br>', markdown_text)
-
     return markdown_text
-
 
 if __name__ == '__main__':
     app.run(debug=True)
