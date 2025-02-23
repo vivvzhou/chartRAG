@@ -5,12 +5,14 @@ import os
 from dotenv import load_dotenv
 import secrets
 import re       # Regular expressions for markdown conversion (String -> html)
+from flask_cors import CORS
 
 secret = secrets.token_urlsafe(32)
 
 app = Flask(__name__)
 
 app.secret_key = secret
+CORS(app)
 
 # Load environment variables from .env file
 load_dotenv()
@@ -73,6 +75,14 @@ def ask_question():
     )
     return {'answer' : response.choices[0].message.content}
 
+@app.route('/process_message', methods=['POST'])
+def process_message():
+    data = request.get_json()
+    message = data.get('message', '')
+    new_message = 'hi ' + message
+    return jsonify({'message': new_message})
+
+
 def markdown_to_html(markdown_text):
     # Convert headers
     markdown_text = re.sub(r'###### (.+)', r'<h6>\1</h6>', markdown_text)
@@ -81,15 +91,15 @@ def markdown_to_html(markdown_text):
     markdown_text = re.sub(r'### (.+)', r'<h3>\1</h3>', markdown_text)
     markdown_text = re.sub(r'## (.+)', r'<h2>\1</h2>', markdown_text)
     markdown_text = re.sub(r'# (.+)', r'<h1>\1</h1>', markdown_text)
-    
+
     # Convert bold text
     markdown_text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', markdown_text)
     markdown_text = re.sub(r'__(.+?)__', r'<b>\1</b>', markdown_text)
-    
+
     # Convert italic text
     markdown_text = re.sub(r'\*(.+?)\*', r'<i>\1</i>', markdown_text)
     markdown_text = re.sub(r'_(.+?)_', r'<i>\1</i>', markdown_text)
-    
+
     # Convert new lines
     markdown_text = re.sub(r'\n', r'<br>', markdown_text)
 
