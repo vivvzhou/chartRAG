@@ -3,10 +3,12 @@
 {% block title %}Home - My Flask App{% endblock %}
 
 {% block content %}
-    <h1>Data Upload</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="datafile">
-        <button type="submit">Upload Data</button>
-    </form>
+    <div class="upload">
+        <h1>Data Upload</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="datafile">
+            <button type="submit">Upload Data</button>
+        </form>
+    </div>
     <!--im lazy so but and if you click on upload but then click out you should keep what is on upload and not replace it with null-->
 {% endblock %}

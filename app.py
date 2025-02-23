@@ -29,8 +29,7 @@ def base():
 def details():
     prompt=f"""output the relevant data in html table format: {description}.
     Start with the table itself, with nothing else.
-    Also, round the numbers two decimal places.
-    Try your best to make the headers less than three words without losing its meaning."""
+    Also, round the numbers two decimal places."""
     
     # Generate table with OpenAI
     tableResponse = client.chat.completions.create(

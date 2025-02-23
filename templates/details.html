@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="container">
-        <div class="col1">
+        <div class="col">
             <div class="summary">
                 <h1>Summary</h1>
                 {% for message in get_flashed_messages() %}
@@ -12,7 +12,7 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="col2">
+        <div class="col">
             <div class="graph">
                 <h2>Graph</h2>
                 {{graph_html|safe}}
