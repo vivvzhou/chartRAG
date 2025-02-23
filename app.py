@@ -19,6 +19,7 @@ client = OpenAI(api_key=api_key)
 # Global variable to store the data DataFrame
 data_df = None
 description = None
+graph = None
 
 @app.route('/')
 def base():
@@ -26,9 +27,11 @@ def base():
 
 @app.route('/details')
 def details():
+    global graph
     print("second")
     print(description)
     fig = generate_graph(data_df, get_graph_recommendation(description))
+    graph = fig
     graph_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
     return render_template('details.html', graph_html=graph_html)
 
@@ -44,7 +47,7 @@ def upload_file():
     description = data_df.describe().to_string()
     print("first")
     print(description)
-    prompt=f"Summarize this data: {description}"
+    prompt=f"Summarize this data: {data_df}"
     
     # Generate summary with OpenAI
     summary = client.chat.completions.create(
