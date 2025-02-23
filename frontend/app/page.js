@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import UploadSection from "../components/UploadSection";
+import QuestionSection from "../components/QuestionSection";
+import MessageSection from "../components/MessageSection";
 
 export default function Home() {
   const [file, setFile] = useState(null);
@@ -99,66 +102,9 @@ export default function Home() {
   return (
     <div className="container mx-auto p-8">
       <h1 className="text-2xl font-bold mb-4">Data Analyzer</h1>
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">Upload CSV File</h2>
-        <input type="file" accept=".csv" onChange={handleFileChange} />
-        <button
-          onClick={handleUpload}
-          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Upload
-        </button>
-        {summary && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Summary:</h3>
-            <p>{summary}</p>
-          </div>
-        )}
-      </div>
-      <div>
-        <h2 className="text-xl font-semibold mb-2">Ask a Question</h2>
-        <input
-          type="text"
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          className="border p-2 w-full mb-2"
-          placeholder="Enter your question"
-        />
-        <button
-          onClick={handleAsk}
-          className="px-4 py-2 bg-green-500 text-white rounded"
-        >
-          Ask
-        </button>
-        {answer && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Answer:</h3>
-            <p>{answer}</p>
-          </div>
-        )}
-      </div>
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-2">Send a Message</h2>
-        <input
-          type="text"
-          value={userMessage}
-          onChange={(e) => setUserMessage(e.target.value)}
-          className="border p-2 w-full mb-2"
-          placeholder="Enter your message"
-        />
-        <button
-          onClick={handleSendMessage}
-          className="px-4 py-2 bg-purple-500 text-white rounded"
-        >
-          Send Message
-        </button>
-        {backendResponse && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold">Response:</h3>
-            <p>{backendResponse}</p>
-          </div>
-        )}
-      </div>
+<UploadSection summary={summary} setSummary={setSummary} />
+<QuestionSection setAnswer={setAnswer} />
+<MessageSection setBackendResponse={setBackendResponse} />
     </div>
   );
 }

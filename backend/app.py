@@ -51,7 +51,9 @@ def upload_file():
     )
 
     flash(summary.choices[0].message.content)  # Use flash to pass data to another route
-    return redirect('/details')
+    # return redirect('/details')
+    print(summary.choices[0].message.content)
+    return jsonify({'summary': summary.choices[0].message.content})
 
 @app.route('/ask', methods=['POST'])
 def ask_question():
