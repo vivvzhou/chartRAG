@@ -36,3 +36,22 @@ tr:last-child td:first-child {
 tr:last-child td:last-child {
     border-bottom-right-radius: 10px;
 }
+
+.col1 {
+    left: 4%;
+    width: 44%;
+    /* padding: 5%; */
+}
+
+.col2 {
+    right: 4%;
+    width: 44%;
+    /* padding: 5%; */
+}
+
+.container {
+    display: flex;
+    /* justify-content: center;
+    align-items: center;
+    height: 100vh; */
+}           
