@@ -27,7 +27,6 @@ ChartRAG is a web application that allows users to upload CSV files, generate da
    ```
 3. **Run the Application**: Start the Flask server by running `python app.py`. Access the application in your web browser at `http://localhost:5000`.
 
-
 ## Installation
 
 1. **Clone the repository:**
@@ -73,9 +72,7 @@ ChartRAG is a web application that allows users to upload CSV files, generate da
      ```bash
      source ~/.bashrc
      ```
-
      or
-
      ```bash
      source ~/.zshrc
      ```
@@ -117,8 +114,7 @@ ChartRAG is a web application that allows users to upload CSV files, generate da
 
 3. **Access the application:**
 
-
-Open your web browser and go to `http://127.0.0.1:5000/` to access the application.
+   Open your web browser and go to `http://127.0.0.1:5000/` to access the application.
 
 ## Docker Deployment
 
@@ -142,3 +138,63 @@ To build and run the backend using Docker, follow these steps:
 3. **Access the application:**
 
    Open your web browser and go to `http://127.0.0.1:5000/` to access the application running inside the Docker container.
+
+## Heroku Deployment
+
+You can deploy the application to Heroku using Docker containers. Follow the steps below:
+
+1. **Login to Heroku and Container Registry:**
+
+   ```bash
+   heroku login
+   heroku container:login
+   ```
+
+2. **Create a Heroku App:**
+
+   ```bash
+   heroku create
+   ```
+
+   This will create a new Heroku app and provide the app name and Git URL.
+
+3. **Set the Stack to Container:**
+
+   ```bash
+   heroku stack:set container -a your-app-name
+   ```
+
+   Replace `your-app-name` with the name of your Heroku app.
+
+4. **Push the Docker Container:**
+
+   Navigate to the `backend` directory and push the Docker container:
+
+   ```bash
+   cd backend
+   heroku container:push web -a your-app-name
+   ```
+
+5. **Release the Container:**
+
+   ```bash
+   heroku container:release web -a your-app-name
+   ```
+
+6. **Set Environment Variables:**
+
+   Set the `OPENAI_API_KEY` config variable on Heroku:
+
+   ```bash
+   heroku config:set OPENAI_API_KEY=your-api-key -a your-app-name
+   ```
+
+7. **Access the Application:**
+
+   Open the application in your web browser:
+
+   ```bash
+   heroku open -a your-app-name
+   ```
+
+**Note:** Ensure that you have the Heroku CLI installed and Docker properly set up on your machine.
