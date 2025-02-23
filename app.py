@@ -3,6 +3,7 @@ import pandas as pd
 from openai import OpenAI
 import os
 import secrets
+from graph import get_graph_recommendation, generate_graph
 
 secret = secrets.token_urlsafe(32)
 
@@ -16,6 +17,7 @@ client = OpenAI(api_key=api_key)
 
 # Global variable to store the data DataFrame
 data_df = None
+description = None
 
 @app.route('/')
 def base():
@@ -23,17 +25,24 @@ def base():
 
 @app.route('/details')
 def details():
-    return render_template('details.html')
+    print("second")
+    print(description)
+    fig = generate_graph(data_df, get_graph_recommendation(description))
+    graph_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
+    return render_template('details.html', graph_html=graph_html)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
     global data_df
+    global description
     file = request.files['datafile']
     if not file:
         return jsonify({'error': 'No file provided'}), 400
 
     data_df = pd.read_csv(file)
     description = data_df.describe().to_string()
+    print("first")
+    print(description)
     prompt=f"Summarize this data: {description}"
     
     # Generate summary with OpenAI
@@ -56,7 +65,7 @@ def ask_question():
     if data_df is None:
         return jsonify({'error': 'No data loaded'}), 400
     description = data_df.describe().to_string()
-    prompt=f"Question: {question}\n\nData Summary:\n{description}\n\nAnswer:"
+    prompt=f"Question: {question}\n\nData Summary:\n{data_df}\n\nAnswer:"
     
     # Simulating a response based on data summary, you could extend this to use OpenAI based on user questions
     response = client.chat.completions.create(
@@ -66,6 +75,7 @@ def ask_question():
     )
     print(response.choices[0].message.content)
     return {'answer' : response.choices[0].message.content}
+
 
 if __name__ == '__main__':
     app.run(debug=True)
