@@ -1,5 +1,3 @@
-# chartRAG
-
 # ChartRAG
 
 ChartRAG is a web application that allows users to upload CSV files, generate data summaries, and ask questions about the data using OpenAI's language models. The application is built using Flask and provides an intuitive web interface for data interaction.
